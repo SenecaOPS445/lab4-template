@@ -2,4 +2,4 @@ language: python
 python:
   - "3.4"
 script:
-  - ./CheckLab4.py -f -v
+  - python3 ./CheckLab4.py -v

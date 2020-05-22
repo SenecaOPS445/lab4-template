@@ -1,4 +1,25 @@
 #!/usr/bin/env python3
+''' 
+Name: CheckLab4.py
+Updated: September 26, 2019 by Raymond Chan
+Reasons: (1) updated for Python version 3.6.8
+         (2) add report header with user and system information
+         (3) update and rename each unit test
+         (4) add checking for new python script lab4e.py
+
+Updated: October 14, 2019 by Raymond Chan
+	 (1) add two more test for lab4e.py
+Usage:
+Check all sections for the Lab 4
+./CheckLab4 -f -v
+Check a specific lab section
+./CheckLab4 -f -v lab3x
+
+Description:
+This script is used to give students more feedback and hints while working
+on Lab 4. Python scripts for Lab 4 and this script should be in the same
+directory. All the Python scripts must use the correct naming scheme.
+'''
 
 import subprocess
 import unittest
@@ -6,6 +27,8 @@ import sys
 import os
 import hashlib
 import urllib.request
+import socket
+import time
 
 class lab4a(unittest.TestCase):
     """All test cases for lab4a - sets"""
@@ -518,6 +541,86 @@ class lab4d(unittest.TestCase):
         output = lab4dStudent.first_three_last_three(str2, str1)
         self.assertEqual(expected_output, output, msg=error_output)
 
+class lab4e(unittest.TestCase):
+    """All test cases for lab4e - strings"""
+
+    def test_0(self):
+        """[Lab 4] - [Investigation 2] - [Part 2] - Strings - Test for file creation: ./lab4e.py"""
+        error_output = 'your file cannot be found(HINT: make sure you AND your file are in the correct directory)'
+        self.assertTrue(os.path.exists('./lab4e.py'), msg=error_output)
+
+    def test_a(self):
+        """[Lab 4] - [Investigation 2] - [Part 2] - Strings - Test for errors running: ./lab4e.py"""
+        # Run students program
+        p = subprocess.Popen(['/usr/bin/python3', './lab4e.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, err = p.communicate()
+        # Fail test if process returns a no zero exit status
+        return_code = p.wait()
+        error_output = 'your program exited with a error(HINT: )'
+        self.assertEqual(return_code, 0, msg=error_output)
+
+    def test_a1(self):
+        """[Lab 4] - [Investigation 2] - [Part 2] - Strings - Test for correct shebang line: ./lab4e.py"""
+        lab_file = open('./lab4e.py')
+        first_line = lab_file.readline()
+        lab_file.close()
+        error_output = 'your program does not have a shebang line(HINT: what should the first line contain)'
+        self.assertEqual(first_line.strip(), '#!/usr/bin/env python3', msg=error_output)
+
+    @unittest.skipIf(os.getlogin() == 'travis', "ignoring user id test")
+    def test_a1_author_id(self):
+        """[Lab 4] - [Investigation 2] - [Part 2] - Correct Script ID - match system ID: ./lab4e.py"""
+        lab_file = open('./lab4e.py')
+        all_lines = lab_file.readlines()
+        lab_file.close()
+        author_id = "not set"
+        error_output = "Author ID not set in the script"
+        for each_line in all_lines:
+            if 'Author ID:' in each_line:
+                author_id = each_line.strip().split(":")[1].replace(' ','')
+                error_output = "Author ID does not match user name running the CheckLab3.py script."
+        user_id = os.getlogin()
+        self.assertEqual(author_id, user_id, msg=error_output)
+
+    def test_b_function_is_digits(self):
+        """[Lab 4] - [Investigation 2] - [Part 2] - Functions - is_digits("3058") has correct output"""
+        try:
+             import lab4e as lab4eStudent
+        except:
+             self.fail('lab4e.py contains errors (HINT: make sure you can import it.')
+        expected_output = True
+        error_output = 'lab4e.py is_digits("3058") return wrong result (HINT: please check its return'
+        self.assertEqual(lab4eStudent.is_digits('3058'), expected_output, msg=error_output)
+
+    def test_c_function_is_digits(self):
+        """[Lab 4] - [Investigation 2] - [Part 2] - Functions - is_digits("x3058") has correct output"""
+        try:
+             import lab4e as lab4eStudent
+        except:
+             self.fail('lab4e.py contains errors (HINT: make sure you can import it.')
+        expected_output = False 
+        error_output = 'lab4e.py is_digits("x3058") return wrong result (HINT: please check its return'
+        self.assertEqual(lab4eStudent.is_digits('x3058'), expected_output, msg=error_output)
+
+    def test_d_function_is_digits(self):
+        """[Lab 4] - [Investigation 2] - [Part 2] - Functions - is_digits("8503x") has correct output"""
+        try:
+             import lab4e as lab4eStudent
+        except:
+             self.fail('lab4e.py contains errors (HINT: make sure you can import it.')
+        expected_output = False
+        error_output = 'lab4e.py is_digits("8503x") return wrong result (HINT: please check its return'
+        self.assertEqual(lab4eStudent.is_digits('8503x'), expected_output, msg=error_output)
+
+    def test_e_function_is_digits(self):
+        """[Lab 4] - [Investigation 2] - [Part 2] - Functions - is_digits("8503") has correct output"""
+        try:
+             import lab4e as lab4eStudent
+        except:
+             self.fail('lab4e.py contains errors (HINT: make sure you can import it.')
+        expected_output = True 
+        error_output = 'lab4e.py is_digits("8503") return wrong result (HINT: please check its return'
+        self.assertEqual(lab4eStudent.is_digits('8503'), expected_output, msg=error_output)
 
 def ChecksumLatest(url=None):
     dat = ''
@@ -544,13 +647,13 @@ def CheckForUpdates():
         lab_name = 'CheckLab4.py'
         lab_num = 'lab4'
         print('Checking for updates...')
-        if ChecksumLatest(url='https://raw.githubusercontent.com/Seneca-CDOT/ops435/master/LabCheckScripts/' + lab_name) != ChecksumLocal(filename='./' + lab_name):
+        if ChecksumLatest(url='https://ict.senecacollege.ca/~raymond.chan/ops435/labs/LabCheckScripts/' + lab_name) != ChecksumLocal(filename='./' + lab_name):
             print()
             print(' There is a update available for ' + lab_name + ' please consider updating:')
             print(' cd ~/ops435/' + lab_num + '/')
             print(' pwd  #   <-- i.e. confirm that you are in the correct directory')
             print(' rm ' + lab_name)
-            print(' ls ' + lab_name + ' || wget https://raw.githubusercontent.com/Seneca-CDOT/ops435/master/LabCheckScripts/' + lab_name)
+            print(' ls ' + lab_name + ' || wget https://ict.senecacollege.ca/~raymond.chan/ops435/master/LabCheckScripts/' + lab_name)
             print()
             return
         print('Running latest version...')
@@ -561,9 +664,26 @@ def CheckForUpdates():
         print('Skipping updates...')
         return
 
+def displayReportHeader():
+    report_heading = 'OPS435 Lab Report - System Information for running '+sys.argv[0]
+    print(report_heading)
+    print(len(report_heading) * '=')
+    print('    User login name:', os.getlogin())
+    print('    Linux system name:', socket.gethostname())
+    print('    Linux system version:', os.popen('cat /etc/redhat-release').read().strip())
+    print('    Python executable:',sys.executable)
+    print('    Python version: ',sys.version_info.major,sys.version_info.minor,sys.version_info.micro,sep='')
+    print('    OS Platform:',sys.platform)
+    print('    Working Directory:',os.getcwd())
+    print('    Start at:',time.asctime())
+    print(len(report_heading) * '=')
+    return
+
 if __name__ == '__main__':
     #CheckForUpdates()
     #wait = input('Press ENTER to run the Lab Check...')
+    if len(sys.argv) == 3:
+        report_header = displayReportHeader()
     unittest.main()
 
 
