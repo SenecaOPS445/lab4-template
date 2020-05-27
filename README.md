@@ -3,7 +3,7 @@ This will download Lab 4 locally, allowing you to work on your scripts and uploa
 
 1. Clone your lab repository into your ~/ops435/lab4 directory using SSH:
 ```bash
-git clone git@github.com:ops435/lab4-yourgithubusername.git ~/ops435/lab4/
+git clone git@github.com:ops435/lab-4-yourgithubusername.git ~/ops435/lab4/
 ```
 2. Copy your backed-up work into your new GitHub-linked directory:
 ```bash
@@ -21,10 +21,17 @@ python3 ./CheckLab4.py -f -v
 ```bash
 python3 ./CheckLab4.py -v &>  ~/ops435/lab4/laboutput.txt
 ```
+Your repo should have the following additional files:
+- [ ] lab4a.py
+- [ ] lab4b.py
+- [ ] lab4c.py
+- [ ] lab4d.py
+- [ ] lab4e.py
+- [ ] laboutput.txt
 
 3. Commit and push (upload) your lab work:
 ```bash
-git add *
+git add lab*
 git commit -m "Individual message or note."
 git push
 ```
