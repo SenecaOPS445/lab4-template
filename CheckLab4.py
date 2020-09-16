@@ -567,7 +567,7 @@ class lab4e(unittest.TestCase):
         error_output = 'your program does not have a shebang line(HINT: what should the first line contain)'
         self.assertEqual(first_line.strip(), '#!/usr/bin/env python3', msg=error_output)
 
-    @unittest.skipIf(os.getlogin() == 'travis', "ignoring user id test")
+    @unittest.skip( "ignoring user id test")
     def test_a1_author_id(self):
         """[Lab 4] - [Investigation 2] - [Part 2] - Correct Script ID - match system ID: ./lab4e.py"""
         lab_file = open('./lab4e.py')
