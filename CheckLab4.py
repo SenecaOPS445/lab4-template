@@ -567,21 +567,6 @@ class lab4e(unittest.TestCase):
         error_output = 'your program does not have a shebang line(HINT: what should the first line contain)'
         self.assertEqual(first_line.strip(), '#!/usr/bin/env python3', msg=error_output)
 
-    @unittest.skip( "ignoring user id test")
-    def test_a1_author_id(self):
-        """[Lab 4] - [Investigation 2] - [Part 2] - Correct Script ID - match system ID: ./lab4e.py"""
-        lab_file = open('./lab4e.py')
-        all_lines = lab_file.readlines()
-        lab_file.close()
-        author_id = "not set"
-        error_output = "Author ID not set in the script"
-        for each_line in all_lines:
-            if 'Author ID:' in each_line:
-                author_id = each_line.strip().split(":")[1].replace(' ','')
-                error_output = "Author ID does not match user name running the CheckLab3.py script."
-        user_id = os.getlogin()
-        self.assertEqual(author_id, user_id, msg=error_output)
-
     def test_b_function_is_digits(self):
         """[Lab 4] - [Investigation 2] - [Part 2] - Functions - is_digits("3058") has correct output"""
         try:
