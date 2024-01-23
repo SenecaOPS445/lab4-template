@@ -41,7 +41,7 @@ class lab4a(unittest.TestCase):
     def test_a(self):
         """[Lab 4] - [Investigation 1] - [Part 2] - Data Structures - Test for errors running: ./lab4a.py"""
         # Run students program
-        p = subprocess.Popen(['/usr/bin/python3', './lab4a.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+        p = subprocess.Popen([sys.executable, './lab4a.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, err = p.communicate()
         # Fail test if process returns a no zero exit status
         return_code = p.wait()
@@ -159,7 +159,7 @@ class lab4b(unittest.TestCase):
     def test_a(self):
         """[Lab 4] - [Investigation 1] - [Part 2] - Data Structures - Test for errors running: ./lab4b.py"""
         # Run students program
-        p = subprocess.Popen(['/usr/bin/python3', './lab4b.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+        p = subprocess.Popen([sys.executable, './lab4b.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, err = p.communicate()
         # Fail test if process returns a no zero exit status
         return_code = p.wait()
@@ -277,7 +277,7 @@ class lab4c(unittest.TestCase):
     def test_a(self):
         """[Lab 4] - [Investigation 1] - [Part 3] - Data Structures - Test for errors running: ./lab4c.py"""
         # Run students program
-        p = subprocess.Popen(['/usr/bin/python3', './lab4c.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+        p = subprocess.Popen([sys.executable, './lab4c.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, err = p.communicate()
         # Fail test if process returns a no zero exit status
         return_code = p.wait()
@@ -401,7 +401,7 @@ class lab4d(unittest.TestCase):
     def test_a(self):
         """[Lab 4] - [Investigation 2] - [Part 1] - Strings - Test for errors running: ./lab4d.py"""
         # Run students program
-        p = subprocess.Popen(['/usr/bin/python3', './lab4d.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+        p = subprocess.Popen([sys.executable, './lab4d.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, err = p.communicate()
         # Fail test if process returns a no zero exit status
         return_code = p.wait()
@@ -552,7 +552,7 @@ class lab4e(unittest.TestCase):
     def test_a(self):
         """[Lab 4] - [Investigation 2] - [Part 2] - Strings - Test for errors running: ./lab4e.py"""
         # Run students program
-        p = subprocess.Popen(['/usr/bin/python3', './lab4e.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+        p = subprocess.Popen([sys.executable, './lab4e.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, err = p.communicate()
         # Fail test if process returns a no zero exit status
         return_code = p.wait()
@@ -650,12 +650,12 @@ def CheckForUpdates():
         return
 
 def displayReportHeader():
-    report_heading = 'OPS435 Lab Report - System Information for running '+sys.argv[0]
+    report_heading = 'OPS445 Lab Report - System Information for running '+sys.argv[0]
     print(report_heading)
     print(len(report_heading) * '=')
-    print('    User login name:', os.getlogin())
+    import getpass
+    print('    User login name:', getpass.getuser())
     print('    Linux system name:', socket.gethostname())
-    print('    Linux system version:', os.popen('cat /etc/redhat-release').read().strip())
     print('    Python executable:',sys.executable)
     print('    Python version: ',sys.version_info.major,sys.version_info.minor,sys.version_info.micro,sep='')
     print('    OS Platform:',sys.platform)
